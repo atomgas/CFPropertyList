@@ -95,7 +95,7 @@ class CFTypeDetector {
    * @return CFType CFType based on guessed type
    * @uses isAssociativeArray() to check if an array only has numeric indexes
    */
-  public function toCFType($value) {
+  public function toCFType($value, $forcedRootType = null) {
     switch(true) {
       case $value instanceof CFType:
         return $value;
@@ -123,14 +123,13 @@ class CFTypeDetector {
       case $value instanceof Iterator:
       case is_array($value):
         // test if $value is simple or associative array
-        if(!$this->autoDictionary) {
-          if(!$this->isAssociativeArray($value)) {
+        if($forcedRootType != CFDictionary && !$this->autoDictionary) {
+          if($forcedRootType == CFArray || !$this->isAssociativeArray($value)) {
             $t = new CFArray();
             foreach($value as $v) $t->add($this->toCFType($v));
             return $t;
           }
         }
-
         $t = new CFDictionary();
         foreach($value as $k => $v) $t->add($k, $this->toCFType($v));
 
