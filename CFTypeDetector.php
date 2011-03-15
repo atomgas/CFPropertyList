@@ -123,8 +123,8 @@ class CFTypeDetector {
       case $value instanceof Iterator:
       case is_array($value):
         // test if $value is simple or associative array
-        if($forcedRootType != CFDictionary && !$this->autoDictionary) {
-          if($forcedRootType == CFArray || !$this->isAssociativeArray($value)) {
+        if($forcedRootType != 'CFDictionary' && !$this->autoDictionary) {
+          if($forcedRootType == 'CFArray' || !$this->isAssociativeArray($value)) {
             $t = new CFArray();
             foreach($value as $v) $t->add($this->toCFType($v));
             return $t;
